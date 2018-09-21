@@ -9,9 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/convict": "^4.2.0",
     "@types/koa": "^2.0.46",
     "@types/node": "^10.10.1",
     "@types/node-fetch": "^2.1.2",
+    "convict": "^4.3.2",
     "koa": "^2.5.3",
     "node-fetch": "^2.2.0",
     "nodemon": "^1.18.4",

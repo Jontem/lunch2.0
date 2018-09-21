@@ -1,11 +1,11 @@
 import * as Koa from "koa";
 import { exhaustiveCheck } from "ts-exhaustive-check";
-import * as path from "path";
 import { preValidation } from "./pre-validation";
 import { getData } from "./get-data";
 import { parse } from "./parser";
+import { config } from "./settings";
 
-const cachePath = path.resolve(__dirname, "../cache");
+const cachePath = config.get("cachePath");
 
 const app = new Koa();
 
