@@ -32,4 +32,5 @@ app.listen(port);
 
 console.log(`Listening on ${port}`);
 console.log(`Using cachePath ${cachePath}`);
+
 preValidation(cachePath);
