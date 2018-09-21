@@ -16,7 +16,6 @@ const firstDay = 8;
 export function parse(input: string): ReadonlyArray<Restaurant> {
   let arr = input.split("~");
   const every = parseInt(arr.shift()!, 10);
-  console.log(every);
   arr = arr.slice(1);
   const rests: Array<Restaurant> = [];
   while (arr.length > 0) {
@@ -38,7 +37,7 @@ function parseCoordinate(input: string): Coordinate | undefined {
   if (splitted.length !== 2) {
     return undefined;
   }
-  console.log(splitted);
+
   return {
     lat: parseFloat(splitted[0]),
     long: parseFloat(splitted[1])
