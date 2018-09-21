@@ -33,14 +33,14 @@ export function parse(input: string): ReadonlyArray<Restaurant> {
 }
 
 function parseCoordinate(input: string): Coordinate | undefined {
-  const splitted = input.split(",");
+  const splitted = input.replace(/[\(\)]/g, "").split(",");
 
   if (splitted.length !== 2) {
     return undefined;
   }
-
+  console.log(splitted);
   return {
-    lat: parseInt(splitted[0]),
-    long: parseInt(splitted[1])
+    lat: parseFloat(splitted[0]),
+    long: parseFloat(splitted[1])
   };
 }
