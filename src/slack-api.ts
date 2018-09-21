@@ -52,6 +52,7 @@ export async function slack(
 ): Promise<RouteResult> {
   setImmediate(
     async (): Promise<void> => {
+      const userRequest = parseUserText(body["&text"]);
       const res = await getData(cachePath);
       switch (res.type) {
         case "Success": {
@@ -100,4 +101,14 @@ async function sendSlackDataResponse(responseUrl: string): Promise<void> {
   } catch (e) {
     console.error(e);
   }
+}
+
+const userRegex = /(n\s)?(\d+)/;
+
+function parseUserText(text: string): { readonly count: number } {
+  const matches = text.match(userRegex);
+  const count = matches && matches[2] ? parseInt(matches[2], 10) : 20;
+  return {
+    count
+  };
 }

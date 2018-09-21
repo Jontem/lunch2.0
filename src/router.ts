@@ -1,6 +1,7 @@
 import * as Koa from "koa";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { slack } from "./slack-api";
+import { testApi } from "./test-api";
 
 export function createRouter(
   cachePath: string
@@ -17,7 +18,10 @@ export function createRouter(
         return;
       }
       case "test": {
+        const { body, statusCode } = await testApi(cachePath);
         ctx.body = "hello test";
+        ctx.body = body;
+        ctx.res.statusCode = statusCode;
         return;
       }
       case "root": {
