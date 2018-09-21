@@ -21,30 +21,30 @@ interface ImmediateResponse {
 interface SlackPostBody {
   // token=gIkuvaNzQIHg97ATvDxqgjtO
   readonly token: string;
-  // &team_id=T0001
-  readonly "&team_id": string;
-  // &team_domain=example
-  readonly "&team_domain": string;
-  // &enterprise_id=E0001
-  readonly "&enterprise_id": string;
-  // &enterprise_name=Globular%20Construct%20Inc
-  readonly "&enterprise_name": string;
-  // &channel_id=C2147483705
-  readonly "&channel_id": string;
-  // &channel_name=test
-  readonly "&channel_name": string;
-  // &user_id=U2147483697
-  readonly "&user_id": string;
-  // &user_name=Steve
-  readonly "&user_name": string;
-  // &command=/weather
-  readonly "&command": string;
-  // &text=94070
-  readonly "&text": string;
-  // &response_url=https://hooks.slack.com/commands/1234/5678
-  readonly "&response_url": string;
-  // &trigger_id=13345224609.738474920.8088930838d88f008e0
-  readonly "&trigger_id": string;
+  // team_id=T0001
+  readonly team_id: string;
+  // team_domain=example
+  readonly team_domain: string;
+  // enterprise_id=E0001
+  readonly enterprise_id: string;
+  // enterprise_name=Globular%20Construct%20Inc
+  readonly enterprise_name: string;
+  // channel_id=C2147483705
+  readonly channel_id: string;
+  // channel_name=test
+  readonly channel_name: string;
+  // user_id=U2147483697
+  readonly user_id: string;
+  // user_name=Steve
+  readonly user_name: string;
+  // command=/weather
+  readonly command: string;
+  // text=94070
+  readonly text: string;
+  // response_url=https://hooks.slack.com/commands/1234/5678
+  readonly response_url: string;
+  // trigger_id=13345224609.738474920.8088930838d88f008e0
+  readonly trigger_id: string;
 }
 
 export async function slack(
@@ -53,14 +53,14 @@ export async function slack(
 ): Promise<RouteResult> {
   setImmediate(
     async (): Promise<void> => {
-      const userRequest = parseUserText(body["&text"]);
+      const userRequest = parseUserText(body["text"]);
       const res = await getData(cachePath);
       switch (res.type) {
         case "Success": {
           const parsed = parse(res.data)
             .filter(r => r.menu)
             .slice(0, userRequest.count);
-          sendSlackDataResponse(body["&response_url"], parsed);
+          sendSlackDataResponse(body["response_url"], parsed);
           return;
         }
         case "Failure": {
