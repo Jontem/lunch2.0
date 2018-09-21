@@ -7,7 +7,7 @@ interface Coordinate {
 interface Restaurant {
   readonly name: string;
   readonly coordinate: Coordinate | undefined;
-  readonly menu: ReadonlyArray<string>;
+  readonly menu: string | undefined;
   readonly distance: number | undefined; // meters
 }
 
@@ -21,6 +21,7 @@ const coordinate = 4;
 const firstDay = 8;
 
 export function parse(input: string): ReadonlyArray<Restaurant> {
+  const dayOfWeek = new Date().getDay() - 1;
   let arr = input.split("~");
   const every = parseInt(arr.shift()!, 10);
   arr = arr.slice(1);
@@ -31,7 +32,7 @@ export function parse(input: string): ReadonlyArray<Restaurant> {
     rests.push({
       name: curr[restName],
       coordinate: parsedCoordinate,
-      menu: curr.slice(firstDay, firstDay + 7),
+      menu: curr[firstDay + dayOfWeek] && curr[firstDay + dayOfWeek],
       distance:
         parsedCoordinate &&
         Math.round(
@@ -45,7 +46,7 @@ export function parse(input: string): ReadonlyArray<Restaurant> {
     });
   }
 
-  return rests;
+  return rests.sort((a, b) => a.distance! - b.distance!);
 }
 
 function parseCoordinate(input: string): Coordinate | undefined {

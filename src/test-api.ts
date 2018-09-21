@@ -7,7 +7,7 @@ export async function testApi(cachePath: string): Promise<RouteResult> {
   const res = await getData(cachePath);
   switch (res.type) {
     case "Success": {
-      const parsed = parse(res.data);
+      const parsed = parse(res.data).filter(r => r.menu);
       return {
         body: parsed,
         statusCode: 200

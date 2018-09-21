@@ -56,7 +56,7 @@ export async function slack(
       const res = await getData(cachePath);
       switch (res.type) {
         case "Success": {
-          const parsed = parse(res.data);
+          const parsed = parse(res.data).filter(r => r.menu);
           sendSlackDataResponse(body["&response_url"]);
           return;
         }
