@@ -1,32 +1,13 @@
 import * as Koa from "koa";
-import { exhaustiveCheck } from "ts-exhaustive-check";
-import { preValidation } from "./pre-validation";
-import { getData } from "./get-data";
-import { parse } from "./parser";
 import { config } from "./settings";
+import { preValidation } from "./pre-validation";
+import { createRouter } from "./router";
 
 const cachePath = config.get("cachePath");
 
 const app = new Koa();
 
-app.use(async ctx => {
-  const res = await getData(cachePath);
-  switch (res.type) {
-    case "Success": {
-      const parsed = parse(res.data);
-      ctx.body = parsed;
-      break;
-    }
-    case "Failure": {
-      ctx.res.statusCode = 500;
-      ctx.body = res;
-      break;
-    }
-    default: {
-      exhaustiveCheck(res);
-    }
-  }
-});
+app.use(createRouter(cachePath));
 
 const port = 3000;
 app.listen(port);
