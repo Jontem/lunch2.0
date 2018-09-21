@@ -9,7 +9,9 @@ export function createRouter(
     const route = matchRoute(ctx);
     switch (route) {
       case "slack": {
-        const { body, statusCode } = await slack(cachePath);
+        console.log(ctx.request.body);
+        const { body, statusCode } = await slack(cachePath, ctx.request
+          .body as any);
         ctx.body = body;
         ctx.res.statusCode = statusCode;
         return;

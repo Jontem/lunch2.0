@@ -11,5 +11,10 @@ export const config = Convict({
     doc: "Path to db folder",
     format: "String",
     default: `${__dirname}/db`
+  },
+  port: {
+    doc: "Listening port",
+    format: "int",
+    default: `8080`
   }
 });
