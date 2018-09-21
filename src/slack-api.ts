@@ -59,7 +59,7 @@ export async function slack(
         case "Success": {
           const parsed = parse(res.data)
             .filter(r => r.menu)
-            .slice(userRequest.count);
+            .slice(0, userRequest.count);
           sendSlackDataResponse(body["&response_url"], parsed);
           return;
         }
