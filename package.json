@@ -1,7 +1,11 @@
 {
   "name": "typescript-lunch",
   "version": "1.0.0",
-  "description": "",
+  "description": "Lunchbot written in typescript",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Jontem/lunch2.0.git"
+  },
   "main": "index.js",
   "scripts": {
     "start": "nodemon -e ts --exec \"ts-node\" src/index.ts ",
