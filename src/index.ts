@@ -18,6 +18,7 @@ app.use(async ctx => {
       break;
     }
     case "Failure": {
+      ctx.res.statusCode = 500;
       ctx.body = res;
       break;
     }
