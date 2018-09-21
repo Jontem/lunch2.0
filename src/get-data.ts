@@ -11,7 +11,7 @@ const regex = /<input.+?id="ctl00_HiddenField1" value="(.+?)"/;
 export async function getData(cachePath: string): Promise<Result> {
   const cacheResult = await getFromCache(cachePath);
   if (cacheResult.type === "Loaded") {
-    return { type: "Success", data: cacheResult.html };
+    return { type: "Success", data: cacheResult.data };
   }
 
   const fetchResult = await getFromServer();
@@ -29,20 +29,22 @@ export async function getData(cachePath: string): Promise<Result> {
       error: "No matches"
     };
   }
+
+  const data = matches[1];
+  await saveToCache(cachePath, data);
+
   return {
     type: "Success",
-    data: matches[1]
+    data
   };
 }
 
-type CacheResult = { type: "NotLoaded" } | { type: "Loaded"; html: string };
+type CacheResult = { type: "NotLoaded" } | { type: "Loaded"; data: string };
 
-export async function getFromCache(cachePath: string): Promise<CacheResult> {
-  const date = new Date().toLocaleDateString("sv-SE");
-
+async function getFromCache(cachePath: string): Promise<CacheResult> {
   return new Promise<CacheResult>(resolve => {
     fs.readFile(
-      `${cachePath}/${date}.html`,
+      `${cachePath}/${getCacheFileName()}`,
       { encoding: "utf8" },
       (err, data) => {
         if (err) {
@@ -54,8 +56,26 @@ export async function getFromCache(cachePath: string): Promise<CacheResult> {
 
         resolve({
           type: "Loaded",
-          html: data
+          data: data
         });
+      }
+    );
+  });
+}
+
+async function saveToCache(cachePath: string, data: string): Promise<void> {
+  return new Promise<void>(resolve => {
+    fs.writeFile(
+      `${cachePath}/${getCacheFileName()}`,
+      data,
+      {
+        encoding: "utf8"
+      },
+      err => {
+        if (err) {
+          console.dir(err);
+        }
+        resolve();
       }
     );
   });
@@ -65,7 +85,7 @@ type FetchResult =
   | { type: "Success"; html: string }
   | { type: "Failure"; code: number; text: string };
 
-export async function getFromServer(): Promise<FetchResult> {
+async function getFromServer(): Promise<FetchResult> {
   const result = await fetch("http://www.jlunch.se");
   if (!result.ok) {
     return {
@@ -79,4 +99,9 @@ export async function getFromServer(): Promise<FetchResult> {
     type: "Success",
     html
   };
+}
+
+function getCacheFileName(): string {
+  const date = new Date().toLocaleDateString("sv-SE");
+  return `${date}.txt`;
 }

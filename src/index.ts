@@ -1,6 +1,7 @@
 import * as Koa from "koa";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import * as path from "path";
+import { preValidation } from "./pre-validation";
 import { getData } from "./get-data";
 import { parse } from "./parser";
 
@@ -31,3 +32,4 @@ app.listen(port);
 
 console.log(`Listening on ${port}`);
 console.log(`Using cachePath ${cachePath}`);
+preValidation(cachePath);
