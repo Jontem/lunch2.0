@@ -1,13 +1,14 @@
 import fetch from "node-fetch";
 import { exhaustiveCheck } from "ts-exhaustive-check";
 import { getData } from "./get-data";
-import { parse } from "./parser";
+import { parse, Restaurant } from "./parser";
 import { RouteResult } from "./route-result";
 
 interface SlackDataResponse {
   response_type: "in_channel";
   text: string;
   attachments: ReadonlyArray<{
+    title: string;
     text: string;
   }>;
 }
@@ -56,8 +57,10 @@ export async function slack(
       const res = await getData(cachePath);
       switch (res.type) {
         case "Success": {
-          const parsed = parse(res.data).filter(r => r.menu);
-          sendSlackDataResponse(body["&response_url"]);
+          const parsed = parse(res.data)
+            .filter(r => r.menu)
+            .slice(userRequest.count);
+          sendSlackDataResponse(body["&response_url"], parsed);
           return;
         }
         case "Failure": {
@@ -84,11 +87,19 @@ function createImmediateResponse(text: string): ImmediateResponse {
   };
 }
 
-async function sendSlackDataResponse(responseUrl: string): Promise<void> {
+const menuReplacer = /(&lt;br \/>|<\s? b\/>)/g;
+
+async function sendSlackDataResponse(
+  responseUrl: string,
+  restaurants: ReadonlyArray<Restaurant>
+): Promise<void> {
   const response: SlackDataResponse = {
     response_type: "in_channel",
-    text: "it works",
-    attachments: []
+    text: "Results",
+    attachments: restaurants.map(r => ({
+      title: `${r.name} - ${r.distance}m`,
+      text: r.menu!.replace(menuReplacer, "\n")
+    }))
   };
   try {
     await fetch(responseUrl, {

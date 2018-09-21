@@ -4,7 +4,7 @@ interface Coordinate {
   readonly long: number;
 }
 
-interface Restaurant {
+export interface Restaurant {
   readonly name: string;
   readonly coordinate: Coordinate | undefined;
   readonly menu: string | undefined;
