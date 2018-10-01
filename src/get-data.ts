@@ -102,6 +102,14 @@ async function getFromServer(): Promise<FetchResult> {
 }
 
 function getCacheFileName(): string {
-  const date = new Date().toLocaleDateString("sv-SE");
-  return `${date}.txt`;
+  return `${getCurrentDate()}.txt`;
+}
+
+function getCurrentDate(): string {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  return `${year}-${month}-${day}`;
 }
