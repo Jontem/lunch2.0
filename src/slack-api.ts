@@ -107,7 +107,7 @@ async function sendSlackDataResponse(
 ): Promise<void> {
   const response: SlackDataResponse = {
     response_type: "in_channel",
-    text: `<@${userId}> is hungry!. Here's today's menus`,
+    text: `<@${userId}> is hungry! Here's today's menus`,
     attachments: restaurants.map(r => ({
       title: `${r.name} - ${r.distance}m`,
       text: `${r.menu && r.menu.replace(menuReplacer, "\n")}${r.menu &&
