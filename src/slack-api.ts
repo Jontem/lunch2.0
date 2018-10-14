@@ -17,6 +17,7 @@ interface SlackDataResponse {
     text: string;
     fallback: string;
     actions: ReadonlyArray<Action>;
+    mrkdwn_in: ReadonlyArray<string>;
   }>;
 }
 
@@ -109,9 +110,12 @@ async function sendSlackDataResponse(
     text: `<@${userId}> is hungry!. Here's today's menus`,
     attachments: restaurants.map(r => ({
       title: `${r.name} - ${r.distance}m`,
-      text: r.menu!.replace(menuReplacer, "\n"),
+      text: `${r.menu && r.menu.replace(menuReplacer, "\n")}${r.menu &&
+        r.weeksAlternative &&
+        "\n\n"}${printWeeksAlternative(r.weeksAlternative)}`,
       fallback: `Website: ${r.website}`,
-      actions: r.website ? [createWebsiteActionButton(r.website)] : []
+      actions: r.website ? [createWebsiteActionButton(r.website)] : [],
+      mrkdwn_in: ["text"]
     }))
   };
   try {
@@ -143,4 +147,12 @@ function createWebsiteActionButton(url: string): Action {
     text: "Website",
     url
   };
+}
+
+function printWeeksAlternative(alternatives: string | undefined): string {
+  if (!alternatives) {
+    return "";
+  }
+
+  return `*Alternatives:*\n\n ${alternatives.replace(menuReplacer, "\n")}`;
 }
