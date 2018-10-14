@@ -53,14 +53,17 @@ export async function slack(
 ): Promise<RouteResult> {
   setImmediate(
     async (): Promise<void> => {
-      const userRequest = parseUserText(body["text"]);
+      const userRequest = parseUserText(body.text);
+      const userId = body.user_id;
       const res = await getData(cachePath);
       switch (res.type) {
         case "Success": {
           const parsed = parse(res.data)
             .filter(r => r.menu)
             .slice(0, userRequest.count);
-          sendSlackDataResponse(body["response_url"], parsed);
+          setImmediate(() => {
+            sendSlackDataResponse(body.response_url, userId, parsed);
+          }, 0);
           return;
         }
         case "Failure": {
@@ -91,11 +94,12 @@ const menuReplacer = /(&lt;br \/>|<\s? b\/>)/g;
 
 async function sendSlackDataResponse(
   responseUrl: string,
+  userId: string,
   restaurants: ReadonlyArray<Restaurant>
 ): Promise<void> {
   const response: SlackDataResponse = {
     response_type: "in_channel",
-    text: "Results",
+    text: `<@${userId}> is hungry!. Here's today's menus`,
     attachments: restaurants.map(r => ({
       title: `${r.name} - ${r.distance}m`,
       text: r.menu!.replace(menuReplacer, "\n")
