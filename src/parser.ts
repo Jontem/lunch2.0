@@ -9,6 +9,7 @@ export interface Restaurant {
   readonly coordinate: Coordinate | undefined;
   readonly menu: string | undefined;
   readonly distance: number | undefined; // meters
+  readonly website?: string;
 }
 
 const officeCoordinate: Coordinate = {
@@ -18,6 +19,7 @@ const officeCoordinate: Coordinate = {
 
 const restName = 0;
 const coordinate = 4;
+const website = 5;
 const firstDay = 8;
 
 export function parse(input: string): ReadonlyArray<Restaurant> {
@@ -42,7 +44,8 @@ export function parse(input: string): ReadonlyArray<Restaurant> {
             officeCoordinate.lat,
             officeCoordinate.long
           ) * 1000
-        )
+        ),
+      website: curr[website] || undefined
     });
   }
 
