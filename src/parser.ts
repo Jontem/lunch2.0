@@ -25,7 +25,8 @@ const firstDay = 8;
 const weeeksAlternative = 8;
 
 export function parse(input: string): ReadonlyArray<Restaurant> {
-  const dayOfWeek = new Date().getDay() - 1;
+  const dayOfWeek = getDayOfWeekIndex();
+
   let arr = input.split("~");
   const every = parseInt(arr.shift()!, 10);
   arr = arr.slice(1);
@@ -66,4 +67,15 @@ function parseCoordinate(input: string): Coordinate | undefined {
     lat: parseFloat(splitted[0]),
     long: parseFloat(splitted[1])
   };
+}
+
+function getDayOfWeekIndex(): number {
+  const dayOfWeek = new Date().getDay();
+
+  if (dayOfWeek === 0) {
+    // sunday
+    return 6;
+  }
+
+  return dayOfWeek - 1;
 }
