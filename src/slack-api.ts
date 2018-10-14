@@ -145,7 +145,7 @@ function createWebsiteActionButton(url: string): Action {
   return {
     type: "button",
     text: "Website",
-    url
+    url: createWebsiteUrl(url)
   };
 }
 
@@ -155,4 +155,12 @@ function printWeeksAlternative(alternatives: string | undefined): string {
   }
 
   return `*Alternatives:*\n\n ${alternatives.replace(menuReplacer, "\n")}`;
+}
+
+const httpRegex = /https?:\/\//i;
+function createWebsiteUrl(url: string): string {
+  if (httpRegex.test(url)) {
+    return url;
+  }
+  return `http://${url}`;
 }
