@@ -4,12 +4,19 @@ import { getData } from "./get-data";
 import { parse, Restaurant } from "./parser";
 import { RouteResult } from "./route-result";
 
+interface Action {
+  readonly type: "button";
+  readonly text: string;
+  readonly url: string;
+}
 interface SlackDataResponse {
   response_type: "in_channel";
   text: string;
   attachments: ReadonlyArray<{
     title: string;
     text: string;
+    fallback: string;
+    actions: ReadonlyArray<Action>;
   }>;
 }
 
@@ -102,7 +109,9 @@ async function sendSlackDataResponse(
     text: `<@${userId}> is hungry!. Here's today's menus`,
     attachments: restaurants.map(r => ({
       title: `${r.name} - ${r.distance}m`,
-      text: r.menu!.replace(menuReplacer, "\n")
+      text: r.menu!.replace(menuReplacer, "\n"),
+      fallback: `Website: ${r.website}`,
+      actions: r.website ? [createWebsiteActionButton(r.website)] : []
     }))
   };
   try {
@@ -125,5 +134,13 @@ function parseUserText(text: string): { readonly count: number } {
   const count = matches && matches[2] ? parseInt(matches[2], 10) : 20;
   return {
     count
+  };
+}
+
+function createWebsiteActionButton(url: string): Action {
+  return {
+    type: "button",
+    text: "Website",
+    url
   };
 }
