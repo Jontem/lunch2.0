@@ -22,7 +22,7 @@ const restName = 0;
 const coordinate = 4;
 const website = 5;
 const firstDay = 8;
-const weeeksAlternative = 8;
+const weeeksAlternative = 17;
 
 export function parse(input: string): ReadonlyArray<Restaurant> {
   const dayOfWeek = getDayOfWeekIndex();
