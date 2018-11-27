@@ -17,18 +17,18 @@
   "license": "ISC",
   "dependencies": {
     "@types/convict": "^4.2.0",
-    "@types/koa": "^2.0.46",
-    "@types/koa-bodyparser": "^5.0.1",
-    "@types/node": "^10.10.1",
-    "@types/node-fetch": "^2.1.2",
-    "convict": "^4.3.2",
-    "http-echo-server": "^2.0.0",
-    "koa": "^2.5.3",
+    "@types/koa": "^2.0.47",
+    "@types/koa-bodyparser": "^5.0.2",
+    "@types/node": "^10.12.10",
+    "@types/node-fetch": "^2.1.4",
+    "convict": "^4.4.0",
+    "http-echo-server": "^2.1.1",
+    "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
-    "node-fetch": "^2.2.0",
-    "nodemon": "^1.18.4",
+    "node-fetch": "^2.3.0",
+    "nodemon": "^1.18.7",
     "ts-exhaustive-check": "^1.0.0",
     "ts-node": "^7.0.1",
-    "typescript": "^3.0.3"
+    "typescript": "^3.1.6"
   }
 }
